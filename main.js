@@ -95,6 +95,7 @@ window.onload = function()
               if(height > (TAB_OFFSET+27)*32)
                 writeWarning("Notes got clipped, too LOW pitched for Mario Maker. Try again with an offset of "+(-TAB_OFFSET+(height-27*32)/32));
               newContext.drawImage(musicImage, notes[i].time*32, height);
+              
           }
         }
     }
