@@ -88,11 +88,12 @@ window.onload = function()
           for(var i = 0;i<notes.length;i++)
           {
               var height = 26*32-notes[i].note*32;
+              if(i == 0) console.log(height);
               if(height < 0)
                 writeWarning("Notes got clipped, too HIGH pitched for Mario Maker. Try again with an offset of "+(TAB_OFFSET+height/32));
 
-              if(height > 27*32)
-                writeWarning("Notes got clipped, too LOW pitched for Mario Maker. Try again with an offset of +"+(TAB_OFFSET+(height-27*32)/32));
+              if(height > (TAB_OFFSET+27)*32)
+                writeWarning("Notes got clipped, too LOW pitched for Mario Maker. Try again with an offset of "+(-TAB_OFFSET+(height-27*32)/32));
               newContext.drawImage(musicImage, notes[i].time*32, height);
           }
         }
