@@ -9,6 +9,7 @@
 	
 	<!--<script src="require.js"></script>-->
 	<script src="main.js"></script>
+	<script src="tsw.js"></script>
 	<!--<script src="main.js"></script>-->
 
 	<script>
@@ -22,21 +23,25 @@
 
 	<form method="POST">
 
-		<p><textarea id="tabTextArea" class="boxsizingBorder" name="item3" cols="200" rows="6">
+		<p>
+			<textarea id="tabTextArea" class="boxsizingBorder" name="item3" cols="200" rows="6">
 e----------0-0---------------------------------------------------------0-0---------------------|
 B------3-3-----3--1-1-0-0--------3-3-1-1-0-0----3-3-1-1-0-0--------3-3-----3--1-1-0-0----------|
 G--0-0--------------------2-2-0--------------2--------------2--0-0--------------------2-2-0----|
 D----------------------------------------------------------------------------------------------|
 A----------------------------------------------------------------------------------------------|
 E----------------------------------------------------------------------------------------------|
-		</textarea></p>
+			</textarea>
+		</p>
 
-		<p><input type="submit" value="Process Tab" id="submitTab">
+		<p>
+			<input type="submit" value="Process Tab" id="submitTab">
 			     Offset tab: 
-		<select id ="selectOffset">
+			<select id ="selectOffset"></select>
 
-		</select>
-</p>
+			<input type="submit" width="50" value="&#9654;" id="playButton">
+			<input type="submit" width="50" value="&#9646;&#9646;" id="stopButton">
+		</p>
 
 	</form>
 

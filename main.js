@@ -3,6 +3,10 @@ window.onload = function()
 
   var TAB_OFFSET = 0;
   var MAX_TIME = 27;
+  var SONG_LOADED = false;
+  var NOTE_LENGTH = 0.2;
+
+  var score = {};
 
   var parseTabText = function(text)
   {
@@ -47,7 +51,20 @@ window.onload = function()
         }
       }
     }
-    drawTiles(allNotes);
+    
+
+    if(allNotes.length > 0)
+    {
+      score = allNotes;
+
+      score.sort(function(a, b) {
+          return parseFloat(a.time) - parseFloat(b.time);
+      });
+
+      drawTiles(allNotes);
+      SONG_LOADED = true;
+    }
+      
   }
 
 
@@ -95,7 +112,6 @@ window.onload = function()
               if(notes[i].note < 0)
                 writeWarning("Notes got clipped, too LOW pitched for Mario Maker. Try again with an offset of "+(-(notes[i].note-TAB_OFFSET)));
               newContext.drawImage(musicImage, notes[i].time*32, height);
-
           }
         }
     }
@@ -171,4 +187,80 @@ window.onload = function()
       selBox.appendChild(opt);
   }
   selBox.selectedIndex = 10;
+
+  var instrument;
+  var volume;
+
+  var playButton = document.getElementById("playButton");
+  var stopButton = document.getElementById("stopButton");
+  playButton.addEventListener("click", function(e){
+    e.preventDefault();
+    if(SONG_LOADED)
+    {
+     
+        instrument = tsw.osc(110, 'square');
+      volume = tsw.gain(0.0); // Half volume.
+      tsw.connect(instrument, volume, tsw.speakers);
+      instrument.start();
+      playSong();
+    }
+  });
+
+  stopButton.addEventListener("click", function(e){
+    e.preventDefault();
+    stopSong();
+      //instrument.stop();
+  });
+
+  var interval;
+
+  function playSong()
+  {
+    
+    
+    
+    var maxCount = score.length;
+    var index = 0;
+    var timeIndex = 0;
+    interval = setInterval(function(){
+        // do your thing
+        if(score[index].time == timeIndex)
+        {
+
+          var freq = indexToFrequency(score[index].note);
+
+
+          for(var i = 0;i<11;i++)
+          {
+            volume.gain(i/20,tsw.now()+NOTE_LENGTH*(i/20));
+            volume.gain(0.5-i/20,tsw.now()+NOTE_LENGTH*(10+i)/20);
+          }
+
+          instrument.frequency(freq);
+       
+          index++;
+         
+        }
+        timeIndex++;
+
+        
+        if(index === maxCount) {
+            clearInterval(interval);
+            volume.gain(0.0,tsw.now());
+        }
+    }, 1000*NOTE_LENGTH);
+  }
+
+  function stopSong()
+  {
+    instrument.stop();
+    clearInterval(interval);
+  }
+
+  function indexToFrequency(index)
+  {
+    var key = 38+index;
+    return Math.pow(2,(key-49)/12)*440;
+  }
+
 }
